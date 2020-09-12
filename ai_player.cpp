@@ -7,7 +7,7 @@ AIPlayer::AIPlayer(char symbol) {
     this->symbol = symbol;
 }
 
-int AIPlayer::negamax(Board *board, int alpha, int beta, char player) {
+int AIPlayer::negamax(Board *board, int alpha, int beta, char player, int depth) {
 
     std::vector<Move> validMoves = getValidMoves(board->getBoard(), player);
 
@@ -19,9 +19,9 @@ int AIPlayer::negamax(Board *board, int alpha, int beta, char player) {
         board->trialMove(&move);
 
         if (board->checkWin(&move)) {
-            value = INT_MAX;
+            value = INT_MAX - depth;
         } else {
-            value = std::max(value, -negamax(board, -beta, -alpha, player == 'x' ? 'o' : 'x'));
+            value = std::max(value, -negamax(board, -beta, -alpha, player == 'x' ? 'o' : 'x', depth+1));
         }
         
         board->undoMove(&move);
@@ -58,7 +58,12 @@ Move AIPlayer::getNextMove(Board *board) {
     std::vector<int> scores;
     for (auto &move : validMoves) {
         board->trialMove(&move);
-        int val = -negamax(board, INT_MIN+1, INT_MAX, symbol == 'o' ? 'x' : 'o');
+        if (board->checkWin(&move)){
+            scores.push_back(INT_MAX);
+            board->undoMove(&move);
+            break;
+        }
+        int val = -negamax(board, INT_MIN+1, INT_MAX, symbol == 'o' ? 'x' : 'o', 0);
         scores.push_back(val);
         board->undoMove(&move);
     }

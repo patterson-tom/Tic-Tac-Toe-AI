@@ -17,6 +17,7 @@ void Game::run() {
         p1 = !p1;
     }
 
+    std::cout << std::endl;
     board.print();
     char winner = board.getWinner();
     if (winner == '-'){

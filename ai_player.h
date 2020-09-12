@@ -6,7 +6,7 @@
 
 class AIPlayer : public Player{
 
-    int negamax(Board*, int, int, char);
+    int negamax(Board*, int, int, char, int);
     std::vector<Move> getValidMoves(std::vector<char>*, char);
 
     public:
