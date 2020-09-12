@@ -10,4 +10,5 @@ class Player {
     
     public:
         virtual Move getNextMove(Board*) = 0;
+        char getSymbol();
 };

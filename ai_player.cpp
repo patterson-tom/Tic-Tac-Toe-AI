@@ -16,7 +16,7 @@ int AIPlayer::negamax(Board *board, int alpha, int beta, char player, int depth)
     int value = INT_MIN;
     for (auto &move : validMoves) {
 
-        board->trialMove(&move);
+        board->applyMove(&move);
 
         if (board->checkWin(&move)) {
             value = INT_MAX - depth;
@@ -57,7 +57,7 @@ Move AIPlayer::getNextMove(Board *board) {
     std::vector<Move> validMoves = getValidMoves(board->getBoard(), symbol);
     std::vector<int> scores;
     for (auto &move : validMoves) {
-        board->trialMove(&move);
+        board->applyMove(&move);
         if (board->checkWin(&move)){
             scores.push_back(INT_MAX);
             board->undoMove(&move);

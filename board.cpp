@@ -7,9 +7,6 @@ Board::Board() {
 }
 
 void Board::init() {
-    winner = '-';
-    finished = false;
-
     for (int i = 0; i < 9; i++) {
         board.push_back('-');
     }
@@ -34,23 +31,6 @@ void Board::applyMove(Move *move) {
 
     board.at(index) = move->player;
 
-    if (checkWin(move)) {
-        finished = true;
-        winner = move->player;
-    }
-
-    if (std::count(board.begin(), board.end(), '-') == 0) finished = true;
-}
-
-void Board::trialMove(Move *move) {
-
-    unsigned int index = move->y * 3 + move->x;
-
-    if (index > 9 || board.at(index) != '-') {
-        return;
-    }
-
-    board.at(index) = move->player;
 }
 
 void Board::undoMove(Move *move) {
@@ -133,14 +113,10 @@ bool Board::checkWin(Move *move) {
     return false;
 }
 
+bool Board::isDraw() {
+    return std::count(board.begin(), board.end(), '-') == 0;
+}
+
 std::vector<char>* Board::getBoard() {
     return &board;
-}
-
-bool Board::isFinished() {
-    return finished;
-}
-
-char Board::getWinner() {
-    return winner;
 }
